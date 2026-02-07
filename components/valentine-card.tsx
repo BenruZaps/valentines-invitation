@@ -196,7 +196,13 @@ export function ValentineCard() {
         <div className="flex min-h-screen flex-col items-center justify-center px-4">
           <div className="card-glow" />
           <div className="card-gradient-border relative z-10 mx-auto w-full max-w-md animate-bounce-in rounded-3xl bg-white/90 p-8 text-center shadow-2xl backdrop-blur-sm md:p-12">
-            <GifDisplay stage="success" />
+            <div className="mb-6 flex justify-center">
+              <img
+                src="/custom-success.jpg"
+                alt="Success"
+                className="h-48 w-auto rounded-2xl object-cover shadow-lg md:h-64"
+              />
+            </div>
             <h1 className="mb-3 animate-pulse-love font-serif font-bold text-4xl text-primary md:text-5xl">
               {"Yay... I LOVE YOU SO MUCH!!!"}
             </h1>
