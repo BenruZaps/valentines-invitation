@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 350 100% 97%;
+    --foreground: 345 30% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 345 30% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 345 30% 20%;
+    --primary: 346 77% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 350 80% 92%;
+    --secondary-foreground: 345 50% 30%;
+    --muted: 350 40% 94%;
+    --muted-foreground: 345 15% 50%;
+    --accent: 330 70% 60%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 350 40% 88%;
+    --input: 350 40% 88%;
+    --ring: 346 77% 50%;
+    --radius: 1rem;
+    --chart-1: 346 77% 50%;
+    --chart-2: 330 70% 60%;
+    --chart-3: 350 80% 70%;
+    --chart-4: 0 70% 65%;
+    --chart-5: 340 60% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background: linear-gradient(
+      160deg,
+      hsl(350, 100%, 97%) 0%,
+      hsl(340, 80%, 94%) 30%,
+      hsl(330, 70%, 92%) 60%,
+      hsl(350, 100%, 97%) 100%
+    );
+    min-height: 100vh;
+  }
+}
+
+/* Soft radial glow behind the card area */
+.card-glow {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    hsla(346, 77%, 50%, 0.12) 0%,
+    hsla(330, 70%, 60%, 0.06) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+/* Gradient border effect for cards */
+.card-gradient-border {
+  position: relative;
+  background: white;
+  border: none;
+}
+.card-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(
+    135deg,
+    hsl(346, 77%, 70%),
+    hsl(330, 70%, 75%),
+    hsl(350, 80%, 80%),
+    hsl(346, 77%, 70%)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Yes button glow effect */
+.btn-glow {
+  box-shadow:
+    0 0 20px hsla(346, 77%, 50%, 0.3),
+    0 0 40px hsla(346, 77%, 50%, 0.1);
+}
+.btn-glow:hover {
+  box-shadow:
+    0 0 25px hsla(346, 77%, 50%, 0.4),
+    0 0 50px hsla(346, 77%, 50%, 0.15);
+}
+
+/* Rain animation */
+@keyframes rainFall {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
