@@ -127,6 +127,14 @@ const config: Config = {
           '25%': { transform: 'translateX(6px)' },
           '75%': { transform: 'translateX(-6px)' },
         },
+        'envelope-float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+        'tap-pulse': {
+          '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+          '50%': { opacity: '1', transform: 'scale(1.05)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -141,6 +149,8 @@ const config: Config = {
         'sparkle': 'sparkle 2s ease-in-out infinite',
         'fade-in-up': 'fade-in-up 0.6s ease-out',
         'sway': 'sway 3s ease-in-out infinite',
+        'envelope-float': 'envelope-float 3s ease-in-out infinite',
+        'tap-pulse': 'tap-pulse 2s ease-in-out infinite',
       },
     },
   },

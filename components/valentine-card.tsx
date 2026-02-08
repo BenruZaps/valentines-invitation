@@ -63,7 +63,7 @@ const STAGES = [
   },
   {
     question: "HELP ME… just say yes",
-    subtitle: "I will do literally anything. Gusto mag tumbling pako?.",
+    subtitle: "I will do literally anything. Gusto mo mag tumbling pako?.",
     noText: "Hmm…",
     gif: "begging" as const,
   },
@@ -105,6 +105,9 @@ const STAGES = [
 const FAKE_GIVEUP_STAGE = 9;
 
 export function ValentineCard() {
+  const [envelopeState, setEnvelopeState] = useState<
+    "closed" | "opening" | "exiting" | "done"
+  >("closed");
   const [stage, setStage] = useState(0);
   const [accepted, setAccepted] = useState(false);
   const [noPosition, setNoPosition] = useState<{
@@ -117,6 +120,16 @@ export function ValentineCard() {
   >(null);
   const [fakeGiveUpDone, setFakeGiveUpDone] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  // Envelope open animation timeline
+  const handleEnvelopeClick = useCallback(() => {
+    if (envelopeState !== "closed") return;
+    setEnvelopeState("opening");
+    // After flap opens, start exit animation
+    setTimeout(() => setEnvelopeState("exiting"), 900);
+    // After exit animation, reveal the card
+    setTimeout(() => setEnvelopeState("done"), 1600);
+  }, [envelopeState]);
 
   const currentStage = STAGES[Math.min(stage, STAGES.length - 1)];
   // Yes button grows with each rejection (capped at 1.3x)
@@ -262,6 +275,93 @@ export function ValentineCard() {
     );
   }
 
+  /* ─── ENVELOPE STATE ─── */
+  if (envelopeState !== "done") {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center px-4">
+        <div className="card-glow" />
+
+        <div
+          className="relative z-10 flex flex-col items-center"
+          style={{
+            animation:
+              envelopeState === "exiting"
+                ? "envelopeExit 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards"
+                : undefined,
+          }}
+        >
+          {/* Floating sparkles around envelope */}
+          {envelopeState === "closed" && (
+            <>
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={`sparkle-${
+                    // biome-ignore lint: index is fine here
+                    i
+                  }`}
+                  className="pointer-events-none absolute text-primary/40"
+                  style={{
+                    top: `${15 + Math.sin(i * 1.2) * 35}%`,
+                    left: `${10 + (i * 16)}%`,
+                    fontSize: `${8 + (i % 3) * 4}px`,
+                    animation: `envelopeSparkle ${2 + i * 0.4}s ease-in-out ${i * 0.3}s infinite`,
+                  }}
+                >
+                  {"✦"}
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Envelope */}
+          <button
+            type="button"
+            onClick={handleEnvelopeClick}
+            className={`envelope-container cursor-pointer border-none bg-transparent p-0 outline-none focus:outline-none ${
+              envelopeState === "closed" ? "animate-envelope-float" : ""
+            }`}
+            aria-label="Open envelope"
+          >
+            <div className="envelope-body">
+              {/* Card peek inside */}
+              <div className="envelope-card-peek">
+                <span className="font-serif text-lg text-primary/50">
+                  {"💌"}
+                </span>
+              </div>
+
+              {/* Bottom V flap */}
+              <div className="envelope-bottom-flap" />
+
+              {/* Top flap */}
+              <div
+                className={`envelope-flap ${
+                  envelopeState === "opening" || envelopeState === "exiting"
+                    ? "open"
+                    : ""
+                }`}
+              >
+                <span className="envelope-seal">{"❤️"}</span>
+              </div>
+            </div>
+          </button>
+
+          {/* Text below envelope */}
+          <div className="mt-8 text-center">
+            <p className="font-serif text-2xl text-primary md:text-3xl">
+              {"You have a letter!"}
+            </p>
+            {envelopeState === "closed" && (
+              <p className="mt-2 animate-tap-pulse text-sm text-muted-foreground">
+                {"Tap to open"}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   /* ─── MAIN CARD ─── */
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4">
@@ -279,7 +379,7 @@ export function ValentineCard() {
 
       <div
         ref={cardRef}
-        className={`card-gradient-border relative z-10 mx-auto w-full max-w-md rounded-3xl bg-white/90 p-8 text-center shadow-2xl backdrop-blur-sm transition-all duration-500 md:p-12 ${isShaking ? "animate-shake" : ""}`}
+        className={`card-gradient-border relative z-10 mx-auto w-full max-w-md rounded-3xl bg-white/90 p-8 text-center shadow-2xl backdrop-blur-sm transition-all duration-500 md:p-12 ${isShaking ? "animate-shake" : ""} ${stage === 0 ? "card-reveal" : ""}`}
       >
         {/* GIF Area */}
         <GifDisplay stage={currentStage.gif} slide={stage} />

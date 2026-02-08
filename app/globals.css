@@ -113,6 +113,191 @@
     0 0 50px hsla(346, 77%, 50%, 0.15);
 }
 
+/* ─── Envelope Animations ─── */
+
+/* Envelope container entrance */
+.envelope-container {
+  perspective: 800px;
+}
+
+/* Envelope body */
+.envelope-body {
+  position: relative;
+  width: 340px;
+  height: 240px;
+  background: linear-gradient(
+    145deg,
+    hsl(346, 70%, 82%) 0%,
+    hsl(350, 75%, 78%) 50%,
+    hsl(340, 65%, 80%) 100%
+  );
+  border-radius: 12px;
+  box-shadow:
+    0 8px 32px hsla(346, 77%, 50%, 0.2),
+    0 2px 8px hsla(346, 77%, 50%, 0.1),
+    inset 0 1px 0 hsla(0, 0%, 100%, 0.3);
+  overflow: visible;
+}
+
+/* Inner shadow for envelope depth */
+.envelope-body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  box-shadow: inset 0 -20px 30px -10px hsla(346, 50%, 60%, 0.15);
+  pointer-events: none;
+}
+
+/* Envelope flap (triangle) */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-top: 130px solid hsl(346, 65%, 75%);
+  transform-origin: top center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+  filter: drop-shadow(0 2px 4px hsla(346, 50%, 40%, 0.15));
+}
+
+.envelope-flap.open {
+  transform: rotateX(180deg);
+}
+
+/* Heart seal on the flap */
+.envelope-seal {
+  position: absolute;
+  top: -86px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-size: 32px;
+  filter: drop-shadow(0 1px 2px hsla(0, 0%, 0%, 0.15));
+  transition: opacity 0.3s ease 0.4s;
+}
+
+.envelope-flap.open .envelope-seal {
+  opacity: 0;
+}
+
+/* Bottom flap (decorative V shape inside) */
+.envelope-bottom-flap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-bottom: 110px solid hsl(350, 70%, 85%);
+  z-index: 1;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* Card peek inside envelope */
+.envelope-card-peek {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background: white;
+  border-radius: 8px;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px hsla(0, 0%, 0%, 0.08);
+}
+
+/* Card sliding out animation */
+@keyframes cardSlideOut {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px);
+    opacity: 1;
+  }
+}
+
+/* Envelope + card exit together */
+@keyframes envelopeExit {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.95);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+}
+
+/* The real card entrance after envelope disappears */
+@keyframes cardReveal {
+  0% {
+    transform: scale(0.85) translateY(30px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02) translateY(-4px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.card-reveal {
+  animation: cardReveal 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Floating sparkles around envelope */
+@keyframes envelopeSparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+/* Gentle hover float for envelope */
+@keyframes envelopeFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Tap hint pulse */
+@keyframes tapPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
 /* Rain animation */
 @keyframes rainFall {
   0% {
